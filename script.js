@@ -5,17 +5,18 @@ let Gameboard = (() => {
     }
 
     let playerFactory = (name, sign) => {
-        playedMoves = []
+        let playedMoves = []
         //this.sign = sign;
         const getSign = () => sign
         const getName = () => name;
-        const addMove = (position) => this.playedMoves.push(position);
-        return { getName, addMove, getSign}
+        const addMove = (position) => playedMoves.push(position);
+        const getMoves = () => playedMoves;
+        return { getName, addMove, getSign, getMoves}
     }
-
+    let winningCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
     playersArray = [];
     let currentPlayer;
-
+    let numberOfPlays = 0;
     let flowControl = (()=> {
         //switchturns function
         //checkifgameover
@@ -39,6 +40,25 @@ let Gameboard = (() => {
         }
     }
 
+    function gameOver() {
+        let movesPlayed = currentPlayer.getMoves;
+        winningCombinations.forEach((combination) => {
+            //fix this function
+            for(let i = 0; i < combination.length; i++) {
+                let count = 0;
+                if (movesPlayed.includes(combination[i])) {
+                    console.log(count);
+                    count += 1;
+                    console.log(count);
+                }
+               if (count == 3) {
+                    return true;
+               }
+            } 
+        });
+        return false;
+    }
+
     let bindEvents = (() => {
         cacheDom.submitButton.addEventListener("click", (e) => {
             if (playersArray.length > 1) { 
@@ -52,13 +72,28 @@ let Gameboard = (() => {
             let secondPlayerName = cacheDom.secondPlayerInput.value;
             let secondPlayer = playerFactory(secondPlayerName, "O");
             playersArray.push(secondPlayer);
+            //console.log(currentPlayer);
             currentPlayer = playersArray[0];
+            //console.log(currentPlayer.getName());
         })
         cacheDom.divs.forEach((div) => {
             div.addEventListener("click", (e) => {
-                console.log(e.target.dataset.id)
+                if (playersArray.length == 0) {
+                    return;
+                }
+                if (numberOfPlays >= 9) {
+                    return;
+                }
+                let index = +e.target.dataset.id;
+                currentPlayer.addMove(index);
+                let move = currentPlayer.getSign();
+                div.textContent = move;
+                numberOfPlays += 1;
                 //if current player = player1 textContent = x else textcontet = O
-                //changeCurrentPlayer();
+                if (gameOver) {
+                    console.log("GAME OVER");
+                }
+                changeCurrentPlayer();
                 //check if gameover
             })
         })
