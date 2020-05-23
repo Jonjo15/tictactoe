@@ -39,20 +39,24 @@ let Gameboard = (() => {
             currentPlayer = playersArray[0];
         }
     }
-
+    let gameFinished = false;
     function gameOver() {
-        let movesPlayed = currentPlayer.getMoves;
+        let movesPlayed = currentPlayer.getMoves();
         winningCombinations.forEach((combination) => {
             //fix this function
+            let count = 0;
+            console.log(combination);
             for(let i = 0; i < combination.length; i++) {
-                let count = 0;
+                //console.log(combination);
+                //let count = 0;
                 if (movesPlayed.includes(combination[i])) {
-                    console.log(count);
+                    //console.log(count);
                     count += 1;
                     console.log(count);
                 }
                if (count == 3) {
-                    return true;
+                   //console.log("GAMEOVER");
+                    gameFinished = true;
                }
             } 
         });
@@ -89,9 +93,10 @@ let Gameboard = (() => {
                 let move = currentPlayer.getSign();
                 div.textContent = move;
                 numberOfPlays += 1;
-                //if current player = player1 textContent = x else textcontet = O
-                if (gameOver) {
-                    console.log("GAME OVER");
+                //if current player = player1 textContent = x else textcontet = 
+                gameOver();
+                if (gameFinished) {
+                    alert("GAME OVER, " + currentPlayer.getName() + " is the winner");
                 }
                 changeCurrentPlayer();
                 //check if gameover
