@@ -30,7 +30,9 @@ let Gameboard = (() => {
         let submitButton = document.querySelector("#submit");
         let resetButton = document.querySelector("#reset");
         let scoreBoard = document.querySelector(".scoreBoard");
-        return {divs, firstPlayerInput, secondPlayerInput, submitButton, resetButton, scoreBoard};
+        let score = document.querySelector(".score");
+        let announceWinner = document.querySelector(".announce");
+        return {divs, firstPlayerInput, secondPlayerInput, submitButton, resetButton, scoreBoard, score, announceWinner};
     })();
 
     function changeCurrentPlayer() {
@@ -40,6 +42,14 @@ let Gameboard = (() => {
         else {
             currentPlayer = playersArray[0];
         }
+    }
+    let firstWins = 0;
+    let secondWins = 0;
+    let numTies = 0;
+    function setScoreBoard() {
+        let firstPlayer = playersArray[0].getName();
+        let secondPlayer = playersArray[1].getName();
+        cacheDom.score.textContent = firstPlayer + ":" + firstWins + " Ties:" + numTies + " " + secondPlayer + ":" + secondWins;
     }
     let gameFinished = false;
     function gameOver() {
@@ -79,6 +89,7 @@ let Gameboard = (() => {
             let secondPlayer = playerFactory(secondPlayerName, "O");
             playersArray.push(secondPlayer);
             //console.log(currentPlayer);
+            setScoreBoard();
             currentPlayer = playersArray[0];
             //console.log(currentPlayer.getName());
         })
@@ -107,9 +118,20 @@ let Gameboard = (() => {
                 gameOver();
                 if (numberOfPlays == 9 && !gameFinished) {
                     console.log("DRAW!!!");
+                    numTies += 1;
+                    setScoreBoard();
                 }
                 if (gameFinished) {
-                    alert("GAME OVER, " + currentPlayer.getName() + " is the winner");
+                    if (currentPlayer == playersArray[0]) {
+                        firstWins += 1;
+                        setScoreBoard();
+                    }
+                    else {
+                        secondWins += 1;
+                        setScoreBoard();
+                    }
+                    cacheDom.announceWinner.textContent = currentPlayer.getName() + " is the winner"
+                    //alert("GAME OVER, " + currentPlayer.getName() + " is the winner");
                 }
                 changeCurrentPlayer();
                 //check if gameover
@@ -120,7 +142,9 @@ let Gameboard = (() => {
             resetBoard();
         });
     })();
-    
+    function startNew() {
+
+    }
     function resetBoard() {
         cacheDom.divs.forEach((div) => {
             div.textContent = "";
@@ -132,6 +156,9 @@ let Gameboard = (() => {
         cacheDom.secondPlayerInput.value = "";
         playersArray = [];
         numberOfPlays = 0;
+        firstWins = 0;
+        secondWins = 0;
+        numTies = 0;
     }
     /* return {
         board

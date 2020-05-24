@@ -11,8 +11,8 @@ body {
 .container {
     display: grid;
     grid-template-rows: 33.33% 33.33% 33.33%;
-    height: 600px;
-    width: 600px;
+    height: 555px;
+    width: 555px;
     text-align: center;
 }
 div {
@@ -50,4 +50,8 @@ input {
 .scoreBoard {
     background-color: white;
     margin-bottom: 10px;
+}
+.score, .announce {
+    font-family: monospace;
+    font-size: xx-large;
 }
