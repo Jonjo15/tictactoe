@@ -28,7 +28,9 @@ let Gameboard = (() => {
         let firstPlayerInput = document.querySelector("#p1");
         let secondPlayerInput = document.querySelector("#p2");
         let submitButton = document.querySelector("#submit");
-        return {divs, firstPlayerInput, secondPlayerInput, submitButton};
+        let resetButton = document.querySelector("#reset");
+        let scoreBoard = document.querySelector(".scoreBoard");
+        return {divs, firstPlayerInput, secondPlayerInput, submitButton, resetButton, scoreBoard};
     })();
 
     function changeCurrentPlayer() {
@@ -45,14 +47,14 @@ let Gameboard = (() => {
         winningCombinations.forEach((combination) => {
             //fix this function
             let count = 0;
-            console.log(combination);
+            //console.log(combination);
             for(let i = 0; i < combination.length; i++) {
                 //console.log(combination);
                 //let count = 0;
                 if (movesPlayed.includes(combination[i])) {
                     //console.log(count);
                     count += 1;
-                    console.log(count);
+                    //console.log(count);
                 }
                if (count == 3) {
                    //console.log("GAMEOVER");
@@ -88,6 +90,14 @@ let Gameboard = (() => {
                 if (numberOfPlays >= 9) {
                     return;
                 }
+                if (div.classList.contains("marked")) { 
+                    return;
+                }
+                if (gameFinished) {
+                    return;
+                }
+                
+                div.classList.add("marked");
                 let index = +e.target.dataset.id;
                 currentPlayer.addMove(index);
                 let move = currentPlayer.getSign();
@@ -95,15 +105,34 @@ let Gameboard = (() => {
                 numberOfPlays += 1;
                 //if current player = player1 textContent = x else textcontet = 
                 gameOver();
+                if (numberOfPlays == 9 && !gameFinished) {
+                    console.log("DRAW!!!");
+                }
                 if (gameFinished) {
                     alert("GAME OVER, " + currentPlayer.getName() + " is the winner");
                 }
                 changeCurrentPlayer();
                 //check if gameover
             })
-        })
+        });
+        cacheDom.resetButton.addEventListener("click", (e) => {
+            console.log("RESET WORKS");
+            resetBoard();
+        });
     })();
     
+    function resetBoard() {
+        cacheDom.divs.forEach((div) => {
+            div.textContent = "";
+            if (div.classList.contains("marked")) {
+                div.classList.remove("marked");
+            }
+        });
+        cacheDom.firstPlayerInput.value = "";
+        cacheDom.secondPlayerInput.value = "";
+        playersArray = [];
+        numberOfPlays = 0;
+    }
     /* return {
         board
     } */

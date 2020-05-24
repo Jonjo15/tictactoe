@@ -11,12 +11,13 @@ body {
 .container {
     display: grid;
     grid-template-rows: 33.33% 33.33% 33.33%;
-    height: 620px;
-    width: 620px;
+    height: 600px;
+    width: 600px;
     text-align: center;
 }
 div {
-    background-color: rgb(163, 167, 165);
+    background-color: rgb(223, 235, 229);
+    
     /* border: 1px solid black; */
 }
 .top, .mid, .bot {
@@ -39,4 +40,14 @@ div {
 }
 input {
     margin-right: 10px;
+}
+.divs {
+    font-size: 140px;
+    text-align: center;
+    padding-top: 20px;
+    vertical-align: middle;
+}
+.scoreBoard {
+    background-color: white;
+    margin-bottom: 10px;
 }
