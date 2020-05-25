@@ -10,8 +10,12 @@ let Gameboard = (() => {
         const getSign = () => sign
         const getName = () => name;
         const addMove = (position) => playedMoves.push(position);
+        const resetPlayedMoves = () => {
+            playedMoves = [];
+            return;
+        }
         const getMoves = () => playedMoves;
-        return { getName, addMove, getSign, getMoves}
+        return { getName, addMove, getSign, getMoves, resetPlayedMoves}
     }
     let winningCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
     playersArray = [];
@@ -35,6 +39,10 @@ let Gameboard = (() => {
         return {divs, firstPlayerInput, secondPlayerInput, submitButton, resetButton, scoreBoard, score, announceWinner};
     })();
 
+    function removeScoreBoard() {
+       // cacheDom.scoreBoar
+       //finish this
+    }
     function changeCurrentPlayer() {
         if (currentPlayer == playersArray[0]) {
             currentPlayer = playersArray[1];
@@ -120,6 +128,14 @@ let Gameboard = (() => {
                     console.log("DRAW!!!");
                     numTies += 1;
                     setScoreBoard();
+                    startNewGameButton = document.createElement("button");
+                    startNewGameButton.textContent = "Play Again";
+                    startNewGameButton.addEventListener("click", (e) => {
+                    startNew();
+                    cacheDom.announceWinner.textContent = "";
+                    startNewGameButton.style.display = "none";
+        });
+        cacheDom.scoreBoard.appendChild(startNewGameButton);
                 }
                 if (gameFinished) {
                     if (currentPlayer == playersArray[0]) {
@@ -130,7 +146,8 @@ let Gameboard = (() => {
                         secondWins += 1;
                         setScoreBoard();
                     }
-                    cacheDom.announceWinner.textContent = currentPlayer.getName() + " is the winner"
+                    announceWinner();
+                    //cacheDom.announceWinner.textContent = currentPlayer.getName() + " is the winner"
                     //alert("GAME OVER, " + currentPlayer.getName() + " is the winner");
                 }
                 changeCurrentPlayer();
@@ -142,8 +159,29 @@ let Gameboard = (() => {
             resetBoard();
         });
     })();
+    function announceWinner() {
+        cacheDom.announceWinner.textContent = currentPlayer.getName() + " is the winner";
+        startNewGameButton = document.createElement("button");
+        startNewGameButton.textContent = "Play Again";
+        startNewGameButton.addEventListener("click", (e) => {
+            startNew();
+            cacheDom.announceWinner.textContent = "";
+            startNewGameButton.style.display = "none";
+        });
+        cacheDom.scoreBoard.appendChild(startNewGameButton);
+    }
     function startNew() {
-
+        cacheDom.divs.forEach((div) => {
+            div.textContent = "";
+            if (div.classList.contains("marked")) {
+                div.classList.remove("marked");
+            }
+        });
+        numberOfPlays = 0;
+        gameFinished = false;
+        playersArray.forEach((player) => {
+            player.resetPlayedMoves();
+        })
     }
     function resetBoard() {
         cacheDom.divs.forEach((div) => {
@@ -159,6 +197,7 @@ let Gameboard = (() => {
         firstWins = 0;
         secondWins = 0;
         numTies = 0;
+        gameFinished = false;
     }
     /* return {
         board
