@@ -36,7 +36,8 @@ let Gameboard = (() => {
         let scoreBoard = document.querySelector(".scoreBoard");
         let score = document.querySelector(".score");
         let announceWinner = document.querySelector(".announce");
-        return {divs, firstPlayerInput, secondPlayerInput, submitButton, resetButton, scoreBoard, score, announceWinner};
+        let submitArea = document.querySelector(".createPlayers");
+        return {divs, firstPlayerInput, secondPlayerInput, submitButton, resetButton, scoreBoard, score, announceWinner, submitArea};
     })();
 
     function removeScoreBoard() {
@@ -99,6 +100,7 @@ let Gameboard = (() => {
             //console.log(currentPlayer);
             setScoreBoard();
             currentPlayer = playersArray[0];
+            cacheDom.submitArea.style.display = "none";
             //console.log(currentPlayer.getName());
         })
         cacheDom.divs.forEach((div) => {
@@ -191,6 +193,7 @@ let Gameboard = (() => {
                 div.classList.remove("marked");
             }
         });
+        cacheDom.submitArea.style.display = "block";
         cacheDom.firstPlayerInput.value = "";
         cacheDom.secondPlayerInput.value = "";
         cacheDom.score.textContent = "";
