@@ -115,7 +115,8 @@ let Gameboard = (() => {
                 if (gameFinished) {
                     return;
                 }
-                
+                cacheDom.firstPlayerInput.value = "";
+                cacheDom.secondPlayerInput.value = "";
                 div.classList.add("marked");
                 let index = +e.target.dataset.id;
                 currentPlayer.addMove(index);
@@ -125,7 +126,7 @@ let Gameboard = (() => {
                 //if current player = player1 textContent = x else textcontet = 
                 gameOver();
                 if (numberOfPlays == 9 && !gameFinished) {
-                    console.log("DRAW!!!");
+                    cacheDom.announceWinner.textContent = "TIE!"
                     numTies += 1;
                     setScoreBoard();
                     startNewGameButton = document.createElement("button");
@@ -133,9 +134,9 @@ let Gameboard = (() => {
                     startNewGameButton.addEventListener("click", (e) => {
                     startNew();
                     cacheDom.announceWinner.textContent = "";
-                    startNewGameButton.style.display = "none";
-        });
-        cacheDom.scoreBoard.appendChild(startNewGameButton);
+                    startNewGameButton.remove();
+                    });
+                    cacheDom.scoreBoard.appendChild(startNewGameButton);
                 }
                 if (gameFinished) {
                     if (currentPlayer == playersArray[0]) {
@@ -192,6 +193,7 @@ let Gameboard = (() => {
         });
         cacheDom.firstPlayerInput.value = "";
         cacheDom.secondPlayerInput.value = "";
+        cacheDom.score.textContent = "";
         playersArray = [];
         numberOfPlays = 0;
         firstWins = 0;
